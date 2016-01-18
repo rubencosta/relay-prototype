@@ -1,5 +1,4 @@
 {
-
   "README_schema" : "Specifies how to load the GraphQL schema that completion, error highlighting, and documentation is based on in the IDE",
   "schema": {
 
@@ -19,7 +18,6 @@
         }
       }
     }
-
   },
 
   "README_endpoints": "A list of GraphQL endpoints that can be queried from '.graphql' files in the IDE",
@@ -29,5 +27,4 @@
       "url": "http://www.GraphQLHub.com/graphql"
     }
   ]
-
 }
