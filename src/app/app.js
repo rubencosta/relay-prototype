@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Relay, {createContainer, Route} from 'react-relay'
+import Item from './item'
 
 export class AppRoute extends Route {
   static routeName = 'HackerNewsRoute';
@@ -9,34 +10,41 @@ export class AppRoute extends Route {
             hn {
                 ${Component.getFragment('store')}
             }
-        }
-    `
+        }`
   };
 }
 
-const AppClass = ({store: {item: {title, score, url, by: {id: author}}}}) => {
+const AppClass = ({store, relay:{setVariables}}) => {
+  var onClick = (storyType) => (event) => setVariables({storyType});
   return (
     <div>
-      <h1><a href={url}>{title}</a></h1>
-      <span><b>points: </b>{score}</span>
-      <p><b>by: </b>{author}</p>
+      <nav>
+        <a href="#top" onClick={onClick('top')}>TOP </a>
+        &nbsp;|&nbsp;
+        <a href="#new" onClick={onClick('new')}>NEW </a>
+        &nbsp;|&nbsp;
+        <a href="#ask" onClick={onClick('ask')}>ASK HN </a>
+        &nbsp;|&nbsp;
+        <a href="#show" onClick={onClick('show')}>SHOW HN </a>
+      </nav>
+      {store.stories.map((storie) => (
+        <Item store={storie} key={storie.id} />
+      ))}
     </div>
   )
 }
 
 export const App = createContainer(AppClass, {
+  initialVariables: {
+    storyType: window.location.hash.slice(1) || 'top'
+  },
   fragments: {
     store: () => Relay.QL`
-        fragment on HackerNewsAPI {
-            item (id: 8863) {
-                title,
-                score,
-                url
-                by {
-                    id
-                }
+        fragment on HackerNewsAPI{
+            stories (limit: 10, storyType: $storyType) {
+                id
+                ${Item.getFragment('store')}
             }
-        }
-    `
+        }`
   }
 })
