@@ -3,8 +3,8 @@ var request = require('sync-request');
 var fs = require('fs');
 var path = require('path');
 
-var graphqlHubUrl = 'http://www.GraphQLHub.com/graphql';
-var response = request('GET', graphqlHubUrl, {
+var graphqlUrl = 'http://localhost:8080/graphql';
+var response = request('GET', graphqlUrl, {
   qs: {
     query: introspectionQuery
   }

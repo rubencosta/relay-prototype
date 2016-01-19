@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "updateSchema": "node ./scripts/updateSchema.js",
-    "start": "npm run updateSchema && webpack-dev-server --content-base build/ -d --progress --colors --host 192.168.1.69"
+    "start": "npm run updateSchema && webpack-dev-server --content-base build/ -d --progress --colors --host 192.168.1.69 --port 8000"
   },
   "author": "Ruben Costa",
   "license": "ISC",
@@ -17,7 +17,7 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "babel-relay-plugin": "^0.6.3",
-    "graphql": "^0.4.4",
+    "graphql": "^0.4.14",
     "html-webpack-plugin": "^1.7.0",
     "sync-request": "^3.0.0",
     "webpack": "^1.12.11",

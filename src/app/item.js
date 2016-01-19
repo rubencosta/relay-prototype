@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import Relay, {createContainer, Route} from 'react-relay'
 
-const Item = ({store: {title, score, url, by: {id: author}}}) => {
+const Item = ({store: {id, name}}) => {
   return (
     <div>
-      <h1><a href={url}>{title}</a></h1>
-      <span>{score} - {author}</span>
+      <h1>{name}</h1>
+      {id}
       <hr />
     </div>
   )
@@ -14,12 +14,10 @@ const Item = ({store: {title, score, url, by: {id: author}}}) => {
 export default createContainer(Item, {
   fragments: {
     store: () => Relay.QL`
-        fragment on HackerNewsItem {
-            title,
-            score,
-            url
-            by {
+        fragment on ShipEdge {
+            node {
                 id
+                name
             }
         }
     `

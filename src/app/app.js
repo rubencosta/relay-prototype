@@ -1,50 +1,38 @@
 import React, {Component} from 'react'
-import Relay, {createContainer, Route} from 'react-relay'
-import Item from './item'
+import Relay, {RootContainer, createContainer, Route} from 'react-relay'
 
-export class AppRoute extends Route {
-  static routeName = 'HackerNewsRoute';
+import Faction from './faction.jsx'
+
+class EmpireRoute extends Route {
   static queries = {
-    store: (Component) => Relay.QL`
-        query root {
-            hn {
-                ${Component.getFragment('store')}
-            }
-        }`
+    faction: () => Relay.QL`
+        query {
+            empire
+        }
+    `
   };
+
+  static routeName = 'EmpireRoute';
+}
+class RebelsRoute extends Route {
+  static queries = {
+    faction: () => Relay.QL`
+        query {
+            rebels
+        }
+    `
+  };
+
+  static routeName = 'RebelsRoute';
 }
 
-const AppClass = ({store, relay:{setVariables}}) => {
-  var onClick = (storyType) => (event) => setVariables({storyType});
+
+export const App = () => {
   return (
     <div>
-      <nav>
-        <a href="#top" onClick={onClick('top')}>TOP </a>
-        &nbsp;|&nbsp;
-        <a href="#new" onClick={onClick('new')}>NEW </a>
-        &nbsp;|&nbsp;
-        <a href="#ask" onClick={onClick('ask')}>ASK HN </a>
-        &nbsp;|&nbsp;
-        <a href="#show" onClick={onClick('show')}>SHOW HN </a>
-      </nav>
-      {store.stories.map((storie) => (
-        <Item store={storie} key={storie.id} />
-      ))}
+      <h1>StarWars</h1>
+      <RootContainer Component={Faction} route={new EmpireRoute()}/>
+      <RootContainer Component={Faction} route={new RebelsRoute()}/>
     </div>
   )
 }
-
-export const App = createContainer(AppClass, {
-  initialVariables: {
-    storyType: window.location.hash.slice(1) || 'top'
-  },
-  fragments: {
-    store: () => Relay.QL`
-        fragment on HackerNewsAPI{
-            stories (limit: 10, storyType: $storyType) {
-                id
-                ${Item.getFragment('store')}
-            }
-        }`
-  }
-})

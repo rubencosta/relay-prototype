@@ -23,8 +23,8 @@
   "README_endpoints": "A list of GraphQL endpoints that can be queried from '.graphql' files in the IDE",
   "endpoints" : [
     {
-      "name": "Default (http://www.GraphQLHub.com/graphql)",
-      "url": "http://www.GraphQLHub.com/graphql"
+      "name": "Default (http://localhost:8080/graphql)",
+      "url": "http://localhost:8080/graphql"
     }
   ]
 }

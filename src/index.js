@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {render} from 'react-dom'
-import {RootContainer, injectNetworkLayer, DefaultNetworkLayer} from 'react-relay'
+import {injectNetworkLayer, DefaultNetworkLayer} from 'react-relay'
 
-import {App, AppRoute} from './app/app'
+import {App} from './app/app'
 
-injectNetworkLayer(new DefaultNetworkLayer('http://www.GraphQLHub.com/graphql'))
+injectNetworkLayer(new DefaultNetworkLayer('http://192.168.1.69:8080/graphql'))
 
-render(<RootContainer Component={App} route={new AppRoute()}/>, document.getElementById('app'))
+render(<App/>, document.getElementById('app'))
