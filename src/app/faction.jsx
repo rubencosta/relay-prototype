@@ -15,24 +15,13 @@ const Faction = ({faction: {name, ships}, relay: {setVariables, variables}}) => 
           ))}
         </ul>
         <nav>
-          <select
-            onChange={(event) => {setVariables({listSize: event.target.value})}}
-            value={variables.listSize}>
-            {[1, 2, 3, 5, 10].map((size, idx) => <option key={idx} value={size}>{size}</option>)}
-          </select>
           <span>
-            <button
-              onClick={() => {setVariables({after: null, before: ships.pageInfo.startCursor})}}
-              disabled={!ships.pageInfo.hasPreviousPage}>
-              back
-            </button>
-          </span>
-          <span>
-            <button
-              onClick={() => {setVariables({after: ships.pageInfo.endCursor, before: null})}}
-              disabled={!ships.pageInfo.hasNextPage}>
-              next
-            </button>
+            {ships.pageInfo.hasNextPage && (
+              <button
+                onClick={() => {setVariables({count: variables.count + 1})}}>
+                see more
+              </button>
+            )}
           </span>
         </nav>
       </section>
@@ -42,15 +31,14 @@ const Faction = ({faction: {name, ships}, relay: {setVariables, variables}}) => 
 
 export default createContainer(Faction, {
   initialVariables: {
-    listSize: 1,
-    after: null,
-    before: null,
+    count: 1,
+    after: null
   },
   fragments: {
     faction: () => Relay.QL`
         fragment on Faction{
             name
-            ships (first: $listSize, after: $after){
+            ships (first:$count){
                 edges {
                     node {
                         id
@@ -60,8 +48,6 @@ export default createContainer(Faction, {
                 pageInfo {
                     endCursor
                     hasNextPage
-                    hasPreviousPage
-                    startCursor
                 }
             }
         }
