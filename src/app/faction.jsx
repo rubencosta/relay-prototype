@@ -3,7 +3,7 @@ import Relay, {createContainer, Route, Store} from 'react-relay'
 import {Ships} from './ships.jsx'
 import {IntroduceShipMutation} from './mutations/introduceShip'
 
-const Faction = ({faction, relay: {setVariables, variables}}) => {
+const Faction = ({faction, relay: {setVariables, variables}, history, location}) => {
   const {name, ships} = faction
   return (
     <section>
@@ -13,7 +13,10 @@ const Faction = ({faction, relay: {setVariables, variables}}) => {
           <span>
             {ships.pageInfo.hasNextPage && (
               <button
-                onClick={() => {setVariables({count: variables.count + 1})}}>
+                onClick={() => {history.push({
+                state:{count: variables.count + 1},
+                pathname: location.pathname
+                })}}>
                 see more
               </button>
             )}
@@ -31,7 +34,7 @@ const Faction = ({faction, relay: {setVariables, variables}}) => {
 
 export default createContainer(Faction, {
   initialVariables: {
-    count: 1
+    count: null
   },
   fragments: {
     faction: () => Relay.QL`

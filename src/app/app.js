@@ -1,24 +1,15 @@
 import React, {Component} from 'react'
 import Relay, {RootContainer, createContainer} from 'react-relay'
 import {RelayRouter} from 'react-router-relay'
-import {Route, Link, hashHistory} from 'react-router'
+import {Route, Link, browserHistory} from 'react-router'
 
 import Faction from './faction.jsx'
 
 const empireQueries = {
-  faction: () => Relay.QL`
-      query {
-          empire
-      }
-  `
+  faction: () => Relay.QL`query {empire}`
 }
-
 const rebelsQueries = {
-  faction: () => Relay.QL`
-      query {
-          rebels
-      }
-  `
+  faction: () => Relay.QL`query {rebels}`
 }
 
 const Dashboard = ({children}) => {
@@ -32,22 +23,32 @@ const Dashboard = ({children}) => {
   )
 }
 
+const prepareParams = (params, route) => ({
+  ...params,
+  count: params.count || route.defaultCount
+})
 
 export const App = () => {
   return (
-    <RelayRouter history={hashHistory}>
+    <RelayRouter history={browserHistory}>
       <Route
         path="/"
         component={Dashboard}>
         <Route
-          path="/empire"
+          path="empire"
           component={Faction}
           queries={empireQueries}
+          stateParams={['count']}
+          prepareParams={prepareParams}
+          defaultCount={1}
         />
         <Route
-          path="/rebels"
+          path="rebels"
           component={Faction}
-          queries={rebelsQueries}/>
+          queries={rebelsQueries}
+          stateParams={['count']}
+          prepareParams={prepareParams}
+          defaultCount={1}/>
       </Route>
     </RelayRouter>
   )
