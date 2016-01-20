@@ -1,38 +1,54 @@
 import React, {Component} from 'react'
-import Relay, {RootContainer, createContainer, Route} from 'react-relay'
+import Relay, {RootContainer, createContainer} from 'react-relay'
+import {RelayRouter} from 'react-router-relay'
+import {Route, Link, hashHistory} from 'react-router'
 
 import Faction from './faction.jsx'
 
-class EmpireRoute extends Route {
-  static queries = {
-    faction: () => Relay.QL`
-        query {
-            empire
-        }
-    `
-  };
-
-  static routeName = 'EmpireRoute';
+const empireQueries = {
+  faction: () => Relay.QL`
+      query {
+          empire
+      }
+  `
 }
-class RebelsRoute extends Route {
-  static queries = {
-    faction: () => Relay.QL`
-        query {
-            rebels
-        }
-    `
-  };
 
-  static routeName = 'RebelsRoute';
+const rebelsQueries = {
+  faction: () => Relay.QL`
+      query {
+          rebels
+      }
+  `
+}
+
+const Dashboard = ({children}) => {
+  return (
+    <div>
+      <h1>Star Wars</h1>
+      <Link to="/empire">Empire</Link>
+      <Link to="/rebels">Rebels</Link>
+      {children}
+    </div>
+  )
 }
 
 
 export const App = () => {
   return (
-    <div>
-      <h1>StarWars</h1>
-      <RootContainer Component={Faction} route={new EmpireRoute()}/>
-      <RootContainer Component={Faction} route={new RebelsRoute()}/>
-    </div>
+    <RelayRouter history={hashHistory}>
+      <Route
+        path="/"
+        component={Dashboard}>
+        <Route
+          path="/empire"
+          component={Faction}
+          queries={empireQueries}
+        />
+        <Route
+          path="/rebels"
+          component={Faction}
+          queries={rebelsQueries}/>
+      </Route>
+    </RelayRouter>
   )
 }
