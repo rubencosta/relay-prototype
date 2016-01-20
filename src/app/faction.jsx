@@ -3,17 +3,21 @@ import Relay, {createContainer, Route, Store} from 'react-relay'
 import {Ships} from './ships.jsx'
 import {IntroduceShipMutation} from './mutations/introduceShip'
 
-const Faction = ({faction, relay: {setVariables, variables}, history, location}) => {
-  const {name, ships} = faction
-  return (
-    <section>
-      <h1>{name}</h1>
-      <Ships ships={faction.ships}/>
-      <div>
+class Faction extends Component{
+  static contextTypes = {
+    router: React.PropTypes.object.isRequired
+  };
+  render() {
+    const {faction, relay: {variables}, location} = this.props
+    const {router} = this.context
+    return (
+      <section>
+        <h1>{name}</h1>
+        <div>
           <span>
-            {ships.pageInfo.hasNextPage && (
+            {faction.ships.pageInfo.hasNextPage && (
               <button
-                onClick={() => {history.push({
+                onClick={() => {router.push({
                 state:{count: variables.count + 1},
                 pathname: location.pathname
                 })}}>
@@ -27,9 +31,11 @@ const Faction = ({faction, relay: {setVariables, variables}, history, location})
               add ship
             </button>
           </span>
-      </div>
-    </section>
-  )
+        </div>
+        <Ships ships={faction.ships}/>
+      </section>
+    )
+  }
 }
 
 export default createContainer(Faction, {

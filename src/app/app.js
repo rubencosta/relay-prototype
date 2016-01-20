@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Relay, {RootContainer, createContainer} from 'react-relay'
 import {RelayRouter} from 'react-router-relay'
-import {Route, Link, browserHistory} from 'react-router'
+import {Route, Link, hashHistory} from 'react-router'
 
 import Faction from './faction.jsx'
 
@@ -30,7 +30,7 @@ const prepareParams = (params, route) => ({
 
 export const App = () => {
   return (
-    <RelayRouter history={browserHistory}>
+    <RelayRouter history={hashHistory}>
       <Route
         path="/"
         component={Dashboard}>
