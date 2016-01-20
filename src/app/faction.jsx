@@ -1,20 +1,15 @@
 import React, {Component} from 'react'
-import Relay, {createContainer, Route} from 'react-relay'
-import Item from './item'
+import Relay, {createContainer, Route, Store} from 'react-relay'
 import {Ships} from './ships.jsx'
+import {IntroduceShipMutation} from './mutations/introduceShip'
 
-const Faction = ({faction: {name, ships}, relay: {setVariables, variables}}) => {
+const Faction = ({faction, relay: {setVariables, variables}}) => {
+  const {name, ships} = faction
   return (
     <section>
       <h1>{name}</h1>
-      <section>
-        <h1>Ships</h1>
-        <ul>
-          {ships.edges.map((edge, idx) => (
-            <li key={idx}>{edge.node.name}</li>
-          ))}
-        </ul>
-        <nav>
+      <Ships ships={faction.ships}/>
+      <div>
           <span>
             {ships.pageInfo.hasNextPage && (
               <button
@@ -23,33 +18,33 @@ const Faction = ({faction: {name, ships}, relay: {setVariables, variables}}) => 
               </button>
             )}
           </span>
-        </nav>
-      </section>
+          <span>
+            <button
+              onClick={() => {Store.commitUpdate(new IntroduceShipMutation({faction}))}}>
+              add ship
+            </button>
+          </span>
+      </div>
     </section>
   )
 }
 
 export default createContainer(Faction, {
   initialVariables: {
-    count: 1,
-    after: null
+    count: 1
   },
   fragments: {
     faction: () => Relay.QL`
         fragment on Faction{
             name
             ships (first:$count){
-                edges {
-                    node {
-                        id
-                        name
-                    }
-                }
-                pageInfo {
+                pageInfo{
                     endCursor
                     hasNextPage
                 }
+                ${Ships.getFragment('ships')}
             }
+            ${IntroduceShipMutation.getFragment('faction')}
         }
     `
   }

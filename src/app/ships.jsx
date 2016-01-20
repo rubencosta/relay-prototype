@@ -1,18 +1,20 @@
 import React, {Component} from 'react'
-import Relay, {createContainer} from 'react-relay'
+import Relay, {createContainer, Store} from 'react-relay'
+
+import Ship from './ship.jsx'
 
 class ShipsClass extends Component {
   render() {
-    console.log(this.props)
     const {ships} = this.props
     return (
-      <div>
-        {ships.edges.map(edge => (
-          <div key={edge.node.id}>
-            <h3>{edge.node.name}</h3>
-          </div>
-        ))}
-      </div>
+      <section>
+        <h1>Ships</h1>
+        <ul>
+          {ships.edges.map((edge) => (
+            <Ship key={edge.node.id} ship={edge.node}/>
+          ))}
+        </ul>
+      </section>
     )
   }
 }
@@ -20,20 +22,19 @@ class ShipsClass extends Component {
 
 export const Ships = createContainer(ShipsClass, {
   fragments: {
-    faction: () => Relay.QL`
-        fragment on Faction {
-            ships (first:10){
-                edges {
-                    node {
-                        id
-                    }
+    ships: () => Relay.QL`
+        fragment on ShipConnection {
+            edges {
+                node {
+                    id
+                    ${Ship.getFragment('ship')}
                 }
-                pageInfo {
-                    endCursor
-                    hasNextPage
-                    hasPreviousPage
-                    startCursor
-                }
+            }
+            pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+                startCursor
             }
         }`
   }
