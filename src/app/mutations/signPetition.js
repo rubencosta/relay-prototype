@@ -39,4 +39,9 @@ export class SignPetitionMutation extends Mutation {
         }
       }]
   }
+  getOptimisticResponse() {
+    return{
+      petition: this.props.petition
+    }
+  }
 }
