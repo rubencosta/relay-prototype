@@ -17,6 +17,7 @@ const PetitionIndex = ({viewer, relay}) => {
       </ul>
       <span>
         <button
+          disabled={relay.variables.isNext ? viewer.allPetitions.pageInfo.hasNextPage : !viewer.allPetitions.pageInfo.hasPreviousPage}
           onClick={() => {relay.setVariables({
           after: null,
           before: viewer.allPetitions.pageInfo.startCursor,
@@ -27,6 +28,7 @@ const PetitionIndex = ({viewer, relay}) => {
       </span>
       <span>
         <button
+          disabled={relay.variables.isNext ? !viewer.allPetitions.pageInfo.hasNextPage : viewer.allPetitions.pageInfo.hasPreviousPage}
           onClick={() => {relay.setVariables({
           after: viewer.allPetitions.pageInfo.endCursor,
           before: null,
