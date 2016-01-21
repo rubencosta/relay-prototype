@@ -4,15 +4,20 @@ import {RelayRouter} from 'react-router-relay'
 import {Route, Link, hashHistory} from 'react-router'
 
 import Petition from './petition.jsx'
+import PetitionIndex from './petitionIndex.jsx'
 
+const petitionIndexQueries = {
+  petitionList: () => Relay.QL`query {allPetitions}`
+}
 const petitionQueries = {
-  petition: () => Relay.QL`query {petition(id: $id)}`
+  petition: () => Relay.QL`query {node(id: $id)}`
 }
 
 const Dashboard = ({children}) => {
   return (
     <div>
-      <h1>Petition</h1>
+      <h1>Dashboard</h1>
+      <Link to="/petitions">Petitions</Link>
       {children}
     </div>
   )
@@ -28,9 +33,15 @@ export const App = () => {
     <RelayRouter history={hashHistory}>
       <Route
         path="/"
-        component={Dashboard}>
+        component={Dashboard}
+      >
         <Route
-          path="petition/:id"
+          path="petitions"
+          component={PetitionIndex}
+          queries={petitionIndexQueries}
+        />
+        <Route
+          path="petitions/:id"
           component={Petition}
           queries={petitionQueries}
         />

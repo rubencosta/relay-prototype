@@ -14,9 +14,6 @@ const Petition = ({petition}) => {
 }
 
 export default createContainer(Petition, {
-  initialVariables: {
-    count: null
-  },
   fragments: {
     petition: () => Relay.QL`
         fragment on Petition{
