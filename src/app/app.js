@@ -7,7 +7,7 @@ import Petition from './petition.jsx'
 import PetitionIndex from './petitionIndex.jsx'
 
 const petitionIndexQueries = {
-  petitionList: () => Relay.QL`query {allPetitions}`
+  viewer: () => Relay.QL`query {viewer}`
 }
 const petitionQueries = {
   petition: () => Relay.QL`query {node(id: $id)}`
