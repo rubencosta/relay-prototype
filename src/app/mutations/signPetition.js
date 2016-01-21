@@ -1,9 +1,9 @@
 import Relay, {Mutation} from 'react-relay'
 
-export class IntroduceShipMutation extends Mutation {
+export class SignPetitionMutation extends Mutation {
   static fragments = {
-    faction: () => Relay.QL`
-        fragment on Faction{
+    petition: () => Relay.QL`
+        fragment on Petition{
             id
         }
     `
@@ -12,22 +12,21 @@ export class IntroduceShipMutation extends Mutation {
   getMutation() {
     return Relay.QL`
         mutation {
-            introduceShip
+            signPetition
         }
     `
   }
   getVariables() {
     return {
-      shipName: 'XXX',
-      factionId: this.props.faction.id
+      petitionId: this.props.petition.id,
+      name: this.props.name,
+      email: this.props.email,
     }
   }
   getFatQuery(){
     return Relay.QL`
-        fragment on IntroduceShipPayload{
-            faction{
-                ships
-            }
+        fragment on signPetitionPayload{
+            petition
         }
     `
   }
@@ -36,7 +35,7 @@ export class IntroduceShipMutation extends Mutation {
       {
         type: 'FIELDS_CHANGE',
         fieldIDs: {
-          faction: this.props.faction.id
+          petition: this.props.petition.id
         }
       }]
   }
