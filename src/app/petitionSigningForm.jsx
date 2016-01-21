@@ -1,12 +1,8 @@
 import React, {Component} from 'react'
-import Relay, {createContainer, Route, Store} from 'react-relay'
+import Relay, {createContainer, Store} from 'react-relay'
 import {SignPetitionMutation} from './mutations/signPetition'
 
 class PetitionSigningForm extends Component {
-  static contextTypes = {
-    router: React.PropTypes.object.isRequired
-  };
-
   onSubmit(event) {
     event.preventDefault()
     const {name: {value: name}, email: {value: email}} = event.target.elements
@@ -22,9 +18,15 @@ class PetitionSigningForm extends Component {
       <section>
         <form onSubmit={::this.onSubmit}>
           <label htmlFor="name">name:</label>
-          <input type="text" name="name"/>
+          <input
+            type="text"
+            name="name"
+            required />
           <label htmlFor="email">email:</label>
-          <input type="email" name="email"/>
+          <input
+            type="email"
+            name="email"
+            required />
           <button type="submit">Sign</button>
         </form>
       </section>
